@@ -1,0 +1,80 @@
+import java.io.*;
+import java.util.*;
+
+class Node{
+    int data;
+    Node left,right;
+    Node(int val){
+        data = val;
+        left = right = null;
+    }
+}
+public class Solution {
+    static void preorder(Node root)
+    {
+        if(root == null)
+        {
+            return;
+        }
+        System.out.print(root.data);
+        preorder(root.left);
+        preorder(root.right);
+    }
+     static void zigzag(Node root)
+     {
+        boolean d = true;
+        Queue <Node> q = new LinkedList<>();
+        q.offer(root);
+        while(!q.isEmpty())
+        {
+            ArrayList<Integer> l = new ArrayList<>();
+            int n = q.size();
+            for(int i=0;i<n;i++)
+            {
+                Node t = q.poll();
+                if(d)
+                {
+                    l.add(t.data);
+                }
+                else{
+                    l.add(0,t.data);
+                }
+                 if(t.left!=null) q.offer(t.left);
+                if(t.right != null) q.offer(t.right);
+            }
+           
+            for(int i:l)
+            {
+                System.out.print(i+" ");
+            }
+                d = !d;
+                System.out.println();
+        }
+     }
+            
+    public static void main(String[] args) {
+        Scanner sc =new Scanner(System.in);
+        String arr[] = sc.nextLine().split(" ");
+        int n = arr.length;
+        Queue <Node> q = new LinkedList<>();
+        Node root = new Node(Integer.valueOf(arr[0]));
+        q.offer(root);
+        for(int i=1;i<n;i++)
+        {
+            Node t = q.poll();
+            if(!arr[i].equals("-1"))
+            {
+                Node l = new Node(Integer.valueOf(arr[i]));
+                t.left = l;
+                q.offer(l);
+            }
+            if(++i<n && !arr[i].equals("-1"))
+            {
+                Node r = new Node(Integer.valueOf(arr[i]));
+                t.right = r;
+                q.offer(r);
+            }
+        }
+        zigzag(root);
+    }
+}
